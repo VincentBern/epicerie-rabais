@@ -8,7 +8,8 @@ Produit:
   - archive/AAAA-MM-JJ.html: simples redirections vers index.html#AAAA-MM-JJ (anciens liens)
 
 Une semaine = un fichier JSON: {start, end, comment, items: [{p, cat, id?, <épicerie>: offre}]}
-où <épicerie> est l'une des clés de STORES (maxi, iga, metro, provigo, superc, adonis)
+où "rec": true marque un produit recommandé (filtre « Recommandés » de la page; sans aucun "rec" dans une semaine, tout est affiché)
+et <épicerie> est l'une des clés de STORES (maxi, iga, metro, provigo, superc, adonis)
 et offre = {price, unit?, regular?, note?}. Le champ "best" des anciennes données est ignoré:
 le meilleur prix est recalculé dans le navigateur selon les épiceries choisies.
 L'historique d'un aliment relie les semaines par le nom du produit (p), ou par "id" s'il est fourni.
@@ -29,7 +30,7 @@ STORES = [
     {"id": "superc", "name": "Super C", "light": "#e87ba4", "dark": "#d55181"},
     {"id": "adonis", "name": "Adonis", "light": "#008300", "dark": "#008300"},
 ]
-META_KEYS = {"p", "cat", "id", "best"}
+META_KEYS = {"p", "cat", "id", "best", "rec"}
 
 CSS = """
 :root{--bg:#fff;--fg:#1d1d1b;--muted:#6b6b66;--line:#e3e1da;--panel:#f6f5f0;--best:#1a7f4b;--accent:#1d1d1b;--accent-fg:#fff}
@@ -57,6 +58,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .weeknav .wl{flex:1;text-align:center;font-weight:600;font-size:15px}
 .search{width:100%;height:44px;padding:0 14px;border:1.5px solid var(--line);border-radius:22px;background:var(--bg);color:var(--fg);font:16px system-ui,sans-serif}
 .count{font-size:13px;color:var(--muted);margin:10px 0 4px}
+.modes{display:flex;gap:8px;margin:10px 0 0}
+.modes .chip{flex:1;justify-content:center;padding:0 8px}
+.star{color:var(--best);font-size:13px}
 table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:15px}
 th,td{text-align:left;padding:9px 4px;border-bottom:1px solid var(--line);vertical-align:top}
 thead th{position:sticky;top:0;z-index:2;background:var(--bg);font-size:12px;color:var(--muted);font-weight:600;vertical-align:bottom;overflow-wrap:anywhere}
@@ -188,7 +192,14 @@ function bests(it, ids){
 }
 
 /* ---------- état ---------- */
-var sel = loadSel(), q = "", wi = 0, statusTimer;
+var REC_KEY = "epicerie.recOnly";
+var sel = loadSel(), q = "", wi = 0, statusTimer, recOnly = loadRec();
+function loadRec(){ try { return localStorage.getItem(REC_KEY) !== "0"; } catch (e) { return true; } }
+function saveRec(){ try { localStorage.setItem(REC_KEY, recOnly ? "1" : "0"); } catch (e) {} }
+function renderMode(){
+  $("#modeRec").setAttribute("aria-pressed", String(recOnly));
+  $("#modeAll").setAttribute("aria-pressed", String(!recOnly));
+}
 function loadSel(){
   try {
     var a = JSON.parse(localStorage.getItem(KEY));
@@ -259,20 +270,26 @@ function cell(o, best){
   return td;
 }
 function renderTable(){
-  var wk = WEEKS[wi], cs = cols(), nq = norm(q.trim()), box = $("#tableBox"), hidden = 0, shown = 0, groups = [];
+  var wk = WEEKS[wi], cs = cols(), nq = norm(q.trim()), box = $("#tableBox"), hidden = 0, shown = 0, groups = [], lowrec = 0;
+  // Filtre « Recommandés »: seulement sans recherche, et seulement si la semaine contient des produits marqués
+  var useRec = recOnly && !nq && wk.items.some(function(it){ return it.rec; });
   box.textContent = "";
   wk.items.forEach(function(it){
     if (!cs.some(function(c){ return has(it[c.id]); })){ hidden++; return; }
     if (nq && norm(it.p).indexOf(nq) < 0) return;
+    if (useRec && !it.rec){ lowrec++; return; }
     shown++;
     var c = it.cat || "Autres", g = groups.filter(function(x){ return x.c === c; })[0];
     if (!g){ g = {c:c, items:[]}; groups.push(g); }
     g.items.push(it);
   });
   $("#count").textContent = shown + (shown > 1 ? " produits" : " produit") +
-    (hidden && !nq ? " · " + hidden + " sans prix dans tes épiceries" : "");
+    (lowrec ? " · " + lowrec + " autres spéciaux masqués" : "") +
+    (hidden && !nq ? " · " + hidden + " sans prix dans tes épiceries" : "") +
+    (nq && recOnly ? " · recherche dans tous les spéciaux" : "");
   if (!shown){
     box.append(h("p", {"class":"empty-msg"}, nq ? "Aucun résultat pour « " + q.trim() + " »."
+      : useRec ? "Aucun spécial recommandé pour tes épiceries cette semaine. Touche « Tous les spéciaux » pour tout voir."
       : "Aucun prix cette semaine pour tes épiceries. Essaie d'en ajouter une autre."));
     return;
   }
@@ -286,7 +303,8 @@ function renderTable(){
       var b = bests(it, cs.map(function(c){ return c.id; }));
       var tr = h("tr", {onclick:function(){ openSheet(it); }},
         h("td", null, h("button", {type:"button", "class":"prod", "aria-haspopup":"dialog",
-          onclick:function(e){ e.stopPropagation(); openSheet(it); }}, it.p)),
+          onclick:function(e){ e.stopPropagation(); openSheet(it); }},
+          it.rec && !useRec ? h("span", {"class":"star"}, "★ ") : null, it.p)),
         cs.map(function(c){ return cell(it[c.id], !!b[c.id]); }));
       body.append(tr);
     });
@@ -427,8 +445,10 @@ function chart(series, rows, unit){
 $("#older").addEventListener("click", function(){ go(1); });
 $("#newer").addEventListener("click", function(){ go(-1); });
 $("#q").addEventListener("input", function(e){ q = e.target.value; renderTable(); });
+$("#modeRec").addEventListener("click", function(){ recOnly = true; saveRec(); renderMode(); renderTable(); });
+$("#modeAll").addEventListener("click", function(){ recOnly = false; saveRec(); renderMode(); renderTable(); });
 wi = initWeek();
-renderWeek(); renderChips(); renderTable();
+renderMode(); renderWeek(); renderChips(); renderTable();
 })();
 """
 
@@ -452,10 +472,15 @@ PAGE = """<!DOCTYPE html>
 </div>
 
 <input class="search" id="q" type="search" placeholder="Chercher un aliment (ex. poulet)" aria-label="Chercher un aliment" autocomplete="off">
+<div class="modes" role="group" aria-label="Quels spéciaux afficher">
+  <button type="button" class="chip" id="modeRec" aria-pressed="true">★ Recommandés</button>
+  <button type="button" class="chip" id="modeAll" aria-pressed="false">Tous les spéciaux</button>
+</div>
 <div class="count" id="count"></div>
 <div id="tableBox"><noscript><p class="empty-msg">Cette page demande JavaScript pour afficher le tableau.</p></noscript></div>
 
 <div class="legend">
+<p>★ Recommandés = les rabais qui valent vraiment la peine (bon rabais ou aliment de base à bas prix). « Tous les spéciaux » affiche l'ensemble des rabais relevés; la recherche fouille toujours dans tous les spéciaux.</p>
 <p>Touche un produit pour voir le détail et l'historique de son prix. En gras vert: le meilleur prix entre tes épiceries. * = note dans le détail (limite d'achat, prix membre, une seule source…). Prix en dollars; l'unité (/lb, /kg) est sous le prix.</p>
 <p id="comment"></p>
 <p>Prix tirés des circulaires et des sites des épiceries, à valider en magasin: ils peuvent varier selon la succursale. Projet personnel, non affilié à Maxi, IGA, Metro, Provigo, Super C ni Adonis.</p>

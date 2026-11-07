@@ -6,6 +6,7 @@
   {
    "cat": "Protéines",
    "p": "Poulet",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "poulet entier frais",
@@ -26,6 +27,7 @@
   {
    "cat": "Protéines",
    "p": "Œufs (12)",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "limite 6, 4,17 $ ensuite",
@@ -36,6 +38,7 @@
   {
    "cat": "Protéines",
    "p": "Bacon 375 g",
+   "rec": true,
    "iga": {
     "note": "Mère Michel, prix membre Scène+; une seule source",
     "price": 3.99,
@@ -51,6 +54,7 @@
   {
    "cat": "Protéines",
    "p": "Bœuf haché",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "2 × 450 g à 9 $, samedi et dimanche seulement, appli / membres Optimum",
@@ -61,6 +65,7 @@
   {
    "cat": "Protéines",
    "p": "Porc haché maigre",
+   "rec": true,
    "iga": {
     "best": true,
     "note": "prix membre Scène+",
@@ -71,6 +76,7 @@
   {
    "cat": "Protéines",
    "p": "Veau haché maigre",
+   "rec": true,
    "iga": {
     "best": true,
     "note": "Scène+ selon une source seulement",
@@ -86,6 +92,7 @@
   {
    "cat": "Protéines",
    "p": "Côtes de dos de porc 585/650 g",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "Bâton Rouge, Lou's ou Montana's (marinées)",
@@ -96,6 +103,7 @@
   {
    "cat": "Protéines",
    "p": "Filet de saumon",
+   "rec": true,
    "iga": {
     "note": "filet de truite arc-en-ciel; une seule source",
     "price": 9.99,
@@ -116,6 +124,7 @@
   {
    "cat": "Protéines",
    "p": "Légumineuses 540 ml",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "Unico, limite 12, 2 $ ensuite",
@@ -126,6 +135,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Pommes de terre 10 lb",
+   "rec": true,
    "maxi": {
     "note": "Russet du Québec, limite 6",
     "price": 1.99,
@@ -141,6 +151,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Brocoli (couronne)",
+   "rec": true,
    "maxi": {
     "price": 1.44,
     "unit": "$"
@@ -155,6 +166,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Champignons 227 g",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "blancs entiers",
@@ -170,6 +182,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Oignons rouges 3 lb",
+   "rec": true,
    "maxi": {
     "best": true,
     "price": 2.49,
@@ -179,6 +192,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Pommes 4 lb",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "Cortland ou McIntosh",
@@ -189,6 +203,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Patates douces 3 lb",
+   "rec": true,
    "iga": {
     "best": true,
     "price": 3,
@@ -198,6 +213,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Mini-concombres 908 g",
+   "rec": true,
    "iga": {
     "best": true,
     "price": 3,
@@ -207,6 +223,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Bleuets 170 g",
+   "rec": true,
    "iga": {
     "best": true,
     "note": "prix membre Scène+",
@@ -217,6 +234,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Riz jasmin 8 kg",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "environ 1,61 $/kg",
@@ -227,6 +245,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Pâtes Catelli",
+   "rec": true,
    "iga": {
     "best": true,
     "note": "325 g ou 454 g; une seule source",
@@ -237,6 +256,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Tomates Unico 796 ml",
+   "rec": true,
    "maxi": {
     "best": true,
     "note": "limite 12, 2 $ ensuite",
@@ -247,6 +267,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Sirop d'érable 540 ml",
+   "rec": true,
    "iga": {
     "best": true,
     "note": "prix membre Scène+; une seule source",
@@ -257,6 +278,7 @@
   {
    "cat": "Collations et desserts",
    "p": "Craquelins",
+   "rec": true,
    "iga": {
     "note": "Dare, Vinta ou Breton; une seule source",
     "price": 2.22,
@@ -272,6 +294,7 @@
   {
    "cat": "Collations et desserts",
    "p": "Gâteaux Vachon",
+   "rec": true,
    "iga": {
     "best": true,
     "note": "une seule source",
@@ -282,6 +305,7 @@
   {
    "cat": "Protéines",
    "p": "Rôti d'épaule de porc désossé",
+   "rec": true,
    "superc": {
     "price": 2.99,
     "unit": "$/lb",
@@ -292,6 +316,7 @@
   {
    "cat": "Protéines",
    "p": "Poitrines de poulet désossées",
+   "rec": true,
    "superc": {
     "price": 4.99,
     "unit": "$/lb",
@@ -302,6 +327,7 @@
   {
    "cat": "Protéines",
    "p": "Crevettes 300-340 g",
+   "rec": true,
    "metro": {
     "price": 5.99,
     "unit": "$",
@@ -322,6 +348,7 @@
   {
    "cat": "Protéines",
    "p": "Ailes de poulet 550 g",
+   "rec": true,
    "metro": {
     "price": 8.99,
     "unit": "$",
@@ -337,6 +364,7 @@
   {
    "cat": "Protéines",
    "p": "Bifteck",
+   "rec": true,
    "metro": {
     "price": 6.77,
     "unit": "$/lb",
@@ -352,6 +380,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Carottes 3 lb",
+   "rec": true,
    "provigo": {
     "price": 1.5,
     "unit": "$",
@@ -362,6 +391,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Oignons 3 lb",
+   "rec": true,
    "provigo": {
     "price": 1.5,
     "unit": "$",
@@ -372,6 +402,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Avocats (6)",
+   "rec": true,
    "superc": {
     "price": 3.99,
     "unit": "$",
@@ -382,6 +413,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Raisins rouges",
+   "rec": true,
    "provigo": {
     "price": 2.5,
     "unit": "$/lb",
@@ -392,6 +424,7 @@
   {
    "cat": "Légumes et fruits",
    "p": "Oranges",
+   "rec": true,
    "metro": {
     "price": 0.99,
     "unit": "$/lb",
@@ -402,6 +435,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Farine 2,5 kg",
+   "rec": true,
    "metro": {
     "price": 3.97,
     "unit": "$",
@@ -412,6 +446,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Thon 85/170 g",
+   "rec": true,
    "superc": {
     "price": 0.99,
     "unit": "$",
@@ -422,6 +457,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Légumes surgelés 750 g",
+   "rec": true,
    "provigo": {
     "price": 3,
     "unit": "$",
@@ -432,6 +468,7 @@
   {
    "cat": "Épicerie sèche",
    "p": "Beurre d'arachide 750 g-1 kg",
+   "rec": true,
    "metro": {
     "price": 4.97,
     "unit": "$",
@@ -442,6 +479,7 @@
   {
    "cat": "Collations et desserts",
    "p": "Biscuits Dare 250 g",
+   "rec": true,
    "superc": {
     "price": 0.99,
     "unit": "$",

@@ -15,6 +15,12 @@ Remplace les parties du skill `maxi-flyer-deals` qui dépendent de `db_get`/`db_
 - Maxi: maxi.ca (voir le skill). IGA: flyers.iga.net grid_view + tiers.
 - Provigo n'a pas de circulaire dans la Capitale-Nationale selon circulaires.club: le dire, offres à valider pour Québec. Adonis: une seule tentative, sinon vide.
 
+## Collecte complète + drapeau « recommandé »
+- Relever TOUS les aliments en rabais de chaque circulaire consultée, pas seulement les bons deals (exclure seulement le non alimentaire: papier, ménage, soins, animaux). Même nom `p` d'une semaine à l'autre pour un même produit.
+- Ensuite, marquer `"rec": true` (au niveau du produit, pas de l'épicerie) sur ceux qui valent vraiment la peine: rabais d'environ 25 % ou plus par rapport au prix régulier, ou prix à l'unité exceptionnellement bas / plus bas de l'historique pour un aliment de base. Sans prix régulier (Metro, Provigo, Super C): `rec` pour les aliments de base à prix bas. Un prix d'une seule source peut être `rec` mais garde sa note « une seule source » et pas de 🔥. Pas de `rec` pour plats préparés, boissons, collations sans vrai rabais.
+- La page affiche par défaut seulement les `rec` (bouton « ★ Recommandés »); « Tous les spéciaux » montre le reste. Une semaine sans aucun `rec` s'affiche au complet.
+- Le message final (tableau 3 colonnes) ne contient que les `rec`; la ligne de couverture donne le total relevé par épicerie et le nombre de recommandés.
+
 ## Publication (obligatoire, avant la notification)
 1. Écrire/mettre à jour `data/<AAAA-MM-JJ>.json` (format dans README.md; clés maxi, iga, metro, provigo, superc, adonis; commentaire = sources réellement consultées).
 2. `python3 build_page.py`; vérifier que index.html contient metro, provigo, superc.

@@ -2,7 +2,7 @@
 
 Comparaison hebdomadaire des circulaires (Maxi, IGA, Metro, Provigo, Super C, Adonis), publiée avec GitHub Pages. Pensée pour le téléphone.
 
-Dans la page: choix des épiceries (mémorisé sur l'appareil, 4 à la fois), recherche d'un aliment, navigation par semaine, et fiche par produit avec l'historique de son prix.
+Dans la page: filtre « ★ Recommandés / Tous les spéciaux », choix des épiceries (mémorisé sur l'appareil, 4 à la fois), recherche d'un aliment, navigation par semaine, et fiche par produit avec l'historique de son prix.
 
 ## Fichiers
 
@@ -13,7 +13,7 @@ Dans la page: choix des épiceries (mémorisé sur l'appareil, 4 à la fois), re
 
 ```json
 {"start": "2026-11-05", "end": "2026-11-11", "comment": "…",
- "items": [{"cat": "Protéines", "p": "Poulet",
+ "items": [{"cat": "Protéines", "p": "Poulet", "rec": true,
             "maxi":  {"price": 2.49, "unit": "$/lb", "note": "poulet entier frais"},
             "metro": {"price": 2.69, "unit": "$/lb"}}]}
 ```
@@ -21,6 +21,7 @@ Dans la page: choix des épiceries (mémorisé sur l'appareil, 4 à la fois), re
 - Clés d'épicerie: `maxi`, `iga`, `metro`, `provigo`, `superc`, `adonis`.
 - Offre: `price` (obligatoire), `unit` (`$` par défaut, `$/lb`, `$/kg`), `regular` (prix régulier), `note`.
 - L'historique relie les semaines par le nom du produit `p` (ou par `id` s'il est fourni): garder le même nom d'une semaine à l'autre.
+- `rec`: `true` sur un produit recommandé (vrai bon deal). La page n'affiche que ces produits par défaut; le bouton « Tous les spéciaux » montre aussi les autres. Une semaine sans aucun `rec` s'affiche au complet.
 - Le champ `best` des anciennes données est ignoré: le meilleur prix est recalculé selon les épiceries choisies.
 
 Prix tirés des circulaires et des sites des épiceries, à valider en magasin. Projet personnel, non affilié aux épiceries.
