@@ -1,1 +1,453 @@
-{"start":"2026-11-05","end":"2026-11-11","comment":"Données partielles tirées de sites tiers (sélections, pas la circulaire complète). Prix d'une seule source marqués. Historique: une seule semaine.","items":[{"cat":"Protéines","p":"Poulet","maxi":{"best":true,"note":"poulet entier frais","price":2.49,"unit":"$/lb"}},{"cat":"Protéines","p":"Œufs (12)","maxi":{"best":true,"note":"limite 6, 4,17 $ ensuite","price":2.99,"unit":"$"}},{"cat":"Protéines","p":"Bacon 375 g","iga":{"note":"Mère Michel, prix membre Scène+; une seule source","price":3.99,"unit":"$"},"maxi":{"best":true,"note":"samedi et dimanche seulement, limite de 4; 3,95 $ ensuite","price":2.95,"unit":"$"}},{"cat":"Protéines","p":"Bœuf haché","maxi":{"best":true,"note":"2 × 450 g à 9 $, samedi et dimanche seulement, appli / membres Optimum","price":10,"unit":"$/kg"}},{"cat":"Protéines","p":"Porc haché maigre","iga":{"best":true,"note":"prix membre Scène+","price":2.2,"unit":"$/lb"}},{"cat":"Protéines","p":"Veau haché maigre","iga":{"best":true,"note":"Scène+ selon une source seulement","price":4.88,"unit":"$/lb"}},{"cat":"Protéines","p":"Côtes de dos de porc 585/650 g","maxi":{"best":true,"note":"Bâton Rouge, Lou's ou Montana's (marinées)","price":9.99,"unit":"$"}},{"cat":"Protéines","p":"Filet de saumon","iga":{"note":"filet de truite arc-en-ciel; une seule source","price":9.99,"unit":"$/lb"},"maxi":{"note":"saumon de l'Atlantique; une seule source","price":9.99,"unit":"$/lb"}},{"cat":"Protéines","p":"Légumineuses 540 ml","maxi":{"best":true,"note":"Unico, limite 12, 2 $ ensuite","price":1.33,"unit":"$"}},{"cat":"Légumes et fruits","p":"Pommes de terre 10 lb","maxi":{"best":true,"note":"Russet du Québec, limite 6","price":1.99,"unit":"$"}},{"cat":"Légumes et fruits","p":"Brocoli (couronne)","maxi":{"best":true,"price":1.44,"unit":"$"}},{"cat":"Légumes et fruits","p":"Champignons 227 g","maxi":{"best":true,"note":"blancs entiers","price":1.49,"unit":"$"}},{"cat":"Légumes et fruits","p":"Oignons rouges 3 lb","maxi":{"best":true,"price":2.49,"unit":"$"}},{"cat":"Légumes et fruits","p":"Pommes 4 lb","maxi":{"best":true,"note":"Cortland ou McIntosh","price":3.49,"unit":"$"}},{"cat":"Légumes et fruits","p":"Patates douces 3 lb","iga":{"best":true,"price":3,"unit":"$"}},{"cat":"Légumes et fruits","p":"Mini-concombres 908 g","iga":{"best":true,"price":3,"unit":"$"}},{"cat":"Légumes et fruits","p":"Bleuets 170 g","iga":{"best":true,"note":"prix membre Scène+","price":1.87,"unit":"$"}},{"cat":"Épicerie sèche","p":"Riz jasmin 8 kg","maxi":{"best":true,"note":"environ 1,61 $/kg","price":12.88,"unit":"$"}},{"cat":"Épicerie sèche","p":"Pâtes Catelli","iga":{"best":true,"note":"325 g ou 454 g; une seule source","price":1.25,"unit":"$"}},{"cat":"Épicerie sèche","p":"Tomates Unico 796 ml","maxi":{"best":true,"note":"limite 12, 2 $ ensuite","price":1.33,"unit":"$"}},{"cat":"Épicerie sèche","p":"Sirop d'érable 540 ml","iga":{"best":true,"note":"prix membre Scène+; une seule source","price":5.99,"unit":"$"}},{"cat":"Collations et desserts","p":"Craquelins","iga":{"best":true,"note":"Dare, Vinta ou Breton; une seule source","price":2.22,"unit":"$"}},{"cat":"Collations et desserts","p":"Gâteaux Vachon","iga":{"best":true,"note":"une seule source","price":2.67,"unit":"$"}}]}
+{
+ "start": "2026-11-05",
+ "end": "2026-11-11",
+ "comment": "Maxi et IGA: sites tiers, sélections partielles. Metro, Provigo, Super C: sélection d'aubaines de circulaires.club (une seule source, vérifiée pour les dates 5 au 11 nov. 2026); metro.ca et provigo.ca ne donnent pas les prix en texte, superc.ca bloque (403). Provigo n'a pas de circulaire dans la Capitale-Nationale selon circulaires.club (à valider). Adonis: non consulté. Prix régulier inconnu pour Metro/Provigo/Super C. Historique: une seule semaine.",
+ "items": [
+  {
+   "cat": "Protéines",
+   "p": "Poulet",
+   "maxi": {
+    "best": true,
+    "note": "poulet entier frais",
+    "price": 2.49,
+    "unit": "$/lb"
+   },
+   "metro": {
+    "price": 2.49,
+    "unit": "$/lb",
+    "note": "poulet entier frais; une seule source (circulaires.club)"
+   },
+   "provigo": {
+    "price": 2.49,
+    "unit": "$/lb",
+    "note": "poulet entier, 2 unités; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Œufs (12)",
+   "maxi": {
+    "best": true,
+    "note": "limite 6, 4,17 $ ensuite",
+    "price": 2.99,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Bacon 375 g",
+   "iga": {
+    "note": "Mère Michel, prix membre Scène+; une seule source",
+    "price": 3.99,
+    "unit": "$"
+   },
+   "maxi": {
+    "best": true,
+    "note": "samedi et dimanche seulement, limite de 4; 3,95 $ ensuite",
+    "price": 2.95,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Bœuf haché",
+   "maxi": {
+    "best": true,
+    "note": "2 × 450 g à 9 $, samedi et dimanche seulement, appli / membres Optimum",
+    "price": 10,
+    "unit": "$/kg"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Porc haché maigre",
+   "iga": {
+    "best": true,
+    "note": "prix membre Scène+",
+    "price": 2.2,
+    "unit": "$/lb"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Veau haché maigre",
+   "iga": {
+    "best": true,
+    "note": "Scène+ selon une source seulement",
+    "price": 4.88,
+    "unit": "$/lb"
+   },
+   "metro": {
+    "price": 5.44,
+    "unit": "$/lb",
+    "note": "veau de grain; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Côtes de dos de porc 585/650 g",
+   "maxi": {
+    "best": true,
+    "note": "Bâton Rouge, Lou's ou Montana's (marinées)",
+    "price": 9.99,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Filet de saumon",
+   "iga": {
+    "note": "filet de truite arc-en-ciel; une seule source",
+    "price": 9.99,
+    "unit": "$/lb"
+   },
+   "maxi": {
+    "note": "saumon de l'Atlantique; une seule source",
+    "price": 9.99,
+    "unit": "$/lb"
+   },
+   "metro": {
+    "price": 8.99,
+    "unit": "$/lb",
+    "note": "saumon Coho; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Légumineuses 540 ml",
+   "maxi": {
+    "best": true,
+    "note": "Unico, limite 12, 2 $ ensuite",
+    "price": 1.33,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Pommes de terre 10 lb",
+   "maxi": {
+    "note": "Russet du Québec, limite 6",
+    "price": 1.99,
+    "unit": "$"
+   },
+   "superc": {
+    "price": 1.95,
+    "unit": "$",
+    "note": "blanches, rouges ou jaunes; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Brocoli (couronne)",
+   "maxi": {
+    "price": 1.44,
+    "unit": "$"
+   },
+   "superc": {
+    "price": 1.27,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Champignons 227 g",
+   "maxi": {
+    "best": true,
+    "note": "blancs entiers",
+    "price": 1.49,
+    "unit": "$"
+   },
+   "metro": {
+    "price": 1.99,
+    "unit": "$",
+    "note": "blancs entiers; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Oignons rouges 3 lb",
+   "maxi": {
+    "best": true,
+    "price": 2.49,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Pommes 4 lb",
+   "maxi": {
+    "best": true,
+    "note": "Cortland ou McIntosh",
+    "price": 3.49,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Patates douces 3 lb",
+   "iga": {
+    "best": true,
+    "price": 3,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Mini-concombres 908 g",
+   "iga": {
+    "best": true,
+    "price": 3,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Bleuets 170 g",
+   "iga": {
+    "best": true,
+    "note": "prix membre Scène+",
+    "price": 1.87,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Riz jasmin 8 kg",
+   "maxi": {
+    "best": true,
+    "note": "environ 1,61 $/kg",
+    "price": 12.88,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Pâtes Catelli",
+   "iga": {
+    "best": true,
+    "note": "325 g ou 454 g; une seule source",
+    "price": 1.25,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Tomates Unico 796 ml",
+   "maxi": {
+    "best": true,
+    "note": "limite 12, 2 $ ensuite",
+    "price": 1.33,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Sirop d'érable 540 ml",
+   "iga": {
+    "best": true,
+    "note": "prix membre Scène+; une seule source",
+    "price": 5.99,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Craquelins",
+   "iga": {
+    "note": "Dare, Vinta ou Breton; une seule source",
+    "price": 2.22,
+    "unit": "$"
+   },
+   "metro": {
+    "price": 1.88,
+    "unit": "$",
+    "note": "Dare, prix membre Moi; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Gâteaux Vachon",
+   "iga": {
+    "best": true,
+    "note": "une seule source",
+    "price": 2.67,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Rôti d'épaule de porc désossé",
+   "superc": {
+    "price": 2.99,
+    "unit": "$/lb",
+    "note": "une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Poitrines de poulet désossées",
+   "superc": {
+    "price": 4.99,
+    "unit": "$/lb",
+    "note": "fraîches; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Crevettes 300-340 g",
+   "metro": {
+    "price": 5.99,
+    "unit": "$",
+    "note": "340 g, jeudi à samedi seulement; une seule source (circulaires.club)"
+   },
+   "superc": {
+    "price": 5.99,
+    "unit": "$",
+    "note": "300 g sauvages d'Argentine; une seule source (circulaires.club)",
+    "best": true
+   },
+   "provigo": {
+    "price": 8,
+    "unit": "$",
+    "note": "300 g sauvages d'Argentine; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Ailes de poulet 550 g",
+   "metro": {
+    "price": 8.99,
+    "unit": "$",
+    "note": "Flamingo; une seule source (circulaires.club)",
+    "best": true
+   },
+   "provigo": {
+    "price": 9,
+    "unit": "$",
+    "note": "Flamingo; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Bifteck",
+   "metro": {
+    "price": 6.77,
+    "unit": "$/lb",
+    "note": "bifteck français; une seule source (circulaires.club)"
+   },
+   "provigo": {
+    "price": 6.75,
+    "unit": "$/lb",
+    "note": "jeudi à dimanche seulement; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Carottes 3 lb",
+   "provigo": {
+    "price": 1.5,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Oignons 3 lb",
+   "provigo": {
+    "price": 1.5,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Avocats (6)",
+   "superc": {
+    "price": 3.99,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Raisins rouges",
+   "provigo": {
+    "price": 2.5,
+    "unit": "$/lb",
+    "note": "sans pépins; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Oranges",
+   "metro": {
+    "price": 0.99,
+    "unit": "$/lb",
+    "note": "une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Farine 2,5 kg",
+   "metro": {
+    "price": 3.97,
+    "unit": "$",
+    "note": "Robin Hood ou Five Roses; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Thon 85/170 g",
+   "superc": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "Selection; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Légumes surgelés 750 g",
+   "provigo": {
+    "price": 3,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Beurre d'arachide 750 g-1 kg",
+   "metro": {
+    "price": 4.97,
+    "unit": "$",
+    "note": "Kraft; une seule source (circulaires.club)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Biscuits Dare 250 g",
+   "superc": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "Collation; une seule source (circulaires.club)",
+    "best": true
+   }
+  }
+ ]
+}
