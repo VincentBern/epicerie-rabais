@@ -2,125 +2,519 @@
 """Génère le site statique (GitHub Pages) à partir des fichiers data/AAAA-MM-JJ.json.
 
 Usage: python3 build_page.py
-Produit: index.html (semaine la plus récente) et archive/AAAA-MM-JJ.html (chaque semaine).
-Une semaine = un fichier JSON: {start, end, comment, items: [{p, cat, maxi, iga}]}
-où maxi/iga = {price, unit, best, note, regular?}.
+Produit:
+  - index.html: l'application complète (toutes les semaines sont intégrées dans la page;
+    le choix des épiceries, la recherche et l'historique des prix se font côté navigateur)
+  - archive/AAAA-MM-JJ.html: simples redirections vers index.html#AAAA-MM-JJ (anciens liens)
+
+Une semaine = un fichier JSON: {start, end, comment, items: [{p, cat, id?, <épicerie>: offre}]}
+où <épicerie> est l'une des clés de STORES (maxi, iga, metro, provigo, superc, adonis)
+et offre = {price, unit?, regular?, note?}. Le champ "best" des anciennes données est ignoré:
+le meilleur prix est recalculé dans le navigateur selon les épiceries choisies.
+L'historique d'un aliment relie les semaines par le nom du produit (p), ou par "id" s'il est fourni.
 """
 import glob
-import html
 import json
 import os
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-MONTHS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
+
+# Ordre = ordre d'affichage. Couleurs: palette catégorielle validée (clair / sombre),
+# la couleur suit l'épicerie, jamais son rang.
+STORES = [
+    {"id": "maxi", "name": "Maxi", "light": "#2a78d6", "dark": "#3987e5"},
+    {"id": "iga", "name": "IGA", "light": "#eb6834", "dark": "#d95926"},
+    {"id": "metro", "name": "Metro", "light": "#1baf7a", "dark": "#199e70"},
+    {"id": "provigo", "name": "Provigo", "light": "#eda100", "dark": "#c98500"},
+    {"id": "superc", "name": "Super C", "light": "#e87ba4", "dark": "#d55181"},
+    {"id": "adonis", "name": "Adonis", "light": "#008300", "dark": "#008300"},
+]
+META_KEYS = {"p", "cat", "id", "best"}
 
 CSS = """
-:root{--bg:#fff;--fg:#1d1d1b;--muted:#6b6b66;--line:#e3e1da;--panel:#f6f5f0;--best:#1a7f4b}
-@media(prefers-color-scheme:dark){:root{--bg:#1b1b19;--fg:#f1efe8;--muted:#a3a29a;--line:#333330;--panel:#252523;--best:#5fcf93}}
-*{box-sizing:border-box}
+:root{--bg:#fff;--fg:#1d1d1b;--muted:#6b6b66;--line:#e3e1da;--panel:#f6f5f0;--best:#1a7f4b;--accent:#1d1d1b;--accent-fg:#fff}
+@media(prefers-color-scheme:dark){:root{--bg:#1b1b19;--fg:#f1efe8;--muted:#a3a29a;--line:#333330;--panel:#252523;--best:#5fcf93;--accent:#f1efe8;--accent-fg:#1b1b19}}
+__STORECSS__
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html.lock{overflow:hidden}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
 main{max-width:560px;margin:0 auto;padding:16px 12px 48px}
-h1{font-size:20px;margin:4px 0 4px}
-.sub{color:var(--muted);font-size:14px;margin:0 0 14px}
-table{width:100%;border-collapse:collapse;font-size:15px}
-th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:13px;color:var(--muted);font-weight:600}
-td.price{white-space:nowrap}
-tr.cat td{background:var(--panel);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:6px}
-.best{font-weight:700;color:var(--best)}
-.none{color:var(--muted)}
-sup{color:var(--muted)}
-.notes{margin-top:14px;font-size:13px;color:var(--muted)}
-.notes p{margin:4px 0}
+h1{font-size:20px;margin:4px 0 2px}
+h2{font-size:15px;margin:18px 0 8px}
+button{font:inherit;color:inherit;cursor:pointer}
+.sub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.lbl{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 14px;border:1.5px solid var(--line);border-radius:22px;background:var(--bg)}
+.chip[aria-pressed=true]{border-color:var(--accent);background:var(--panel);font-weight:600}
+.chip .n{font-size:12px;color:var(--muted);font-weight:400}
+.chip.empty:not([aria-pressed=true]){color:var(--muted)}
+.status{font-size:13px;color:var(--muted);margin:8px 0 0}
+.status:empty{display:none}
+.weeknav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0 8px}
+.weeknav button{width:44px;height:44px;border:1.5px solid var(--line);border-radius:22px;background:var(--bg);font-size:20px;line-height:1}
+.weeknav button:disabled{opacity:.35;cursor:default}
+.weeknav .wl{flex:1;text-align:center;font-weight:600;font-size:15px}
+.search{width:100%;height:44px;padding:0 14px;border:1.5px solid var(--line);border-radius:22px;background:var(--bg);color:var(--fg);font:16px system-ui,sans-serif}
+.count{font-size:13px;color:var(--muted);margin:10px 0 4px}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:15px}
+th,td{text-align:left;padding:9px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{position:sticky;top:0;z-index:2;background:var(--bg);font-size:12px;color:var(--muted);font-weight:600;vertical-align:bottom;overflow-wrap:anywhere}
+th.s,td.pc{text-align:right}
+th.s svg{display:block;margin:0 0 3px auto}
+tr.cat td{background:var(--panel);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:6px;text-align:left}
+tbody tr:not(.cat){cursor:pointer}
+button.prod{border:0;background:none;padding:0;text-align:left;line-height:1.3;font-size:15px;overflow-wrap:anywhere}
+td.pc{white-space:nowrap}
+.pr{font-variant-numeric:tabular-nums}
+.pr sup{color:var(--muted)}
+.un,.rg{display:block;font-size:11px;color:var(--muted)}
+.rg{text-decoration:line-through}
+td.best .pr{font-weight:700;color:var(--best)}
+td.none{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.empty-msg{color:var(--muted);padding:16px 0}
 .legend{margin-top:16px;font-size:13px;color:var(--muted)}
-h2{font-size:16px;margin:24px 0 8px}
-ul.weeks{padding-left:18px;margin:0}
-a{color:inherit}
+.legend p{margin:6px 0}
+dialog{border:0;padding:0;width:100%;max-width:560px;margin:auto auto 0;border-radius:18px 18px 0 0;background:var(--bg);color:var(--fg);max-height:88vh;max-height:88dvh;overflow:hidden}
+dialog[open]{display:flex;flex-direction:column}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+.sheet-head{display:flex;align-items:flex-start;gap:8px;padding:14px 12px 8px 16px;border-bottom:1px solid var(--line)}
+.sheet-head h2{flex:1;margin:0;font-size:18px;line-height:1.25}
+.sheet-head .cat{font-size:12px;color:var(--muted);font-weight:400;display:block;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.x{width:44px;height:44px;border:0;background:none;font-size:26px;line-height:1;flex:none}
+.sheet-body{overflow-y:auto;padding:4px 16px 28px;overscroll-behavior:contain}
+.row{display:flex;align-items:baseline;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
+.row .nm{display:flex;align-items:center;gap:7px;flex:1}
+.row .note{display:block;font-size:12px;color:var(--muted)}
+.row .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.row .v small{font-weight:400;color:var(--muted)}
+.badge{display:inline-block;font-size:11px;font-weight:600;color:var(--best);border:1px solid var(--best);border-radius:10px;padding:0 7px;margin-left:6px;white-space:nowrap}
+.hint{color:var(--muted);font-size:14px;margin:8px 0}
+.readout{min-height:44px;font-size:13px;margin:6px 0 2px}
+.readout b{display:block;font-size:13px}
+.readout span{display:inline-flex;align-items:center;gap:5px;margin-right:12px;white-space:nowrap}
+svg.chart{width:100%;height:auto;display:block;touch-action:pan-y}
+svg.chart text{fill:var(--muted);font-size:10px;font-family:system-ui,sans-serif}
+.mini{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.mini th,.mini td{padding:6px 3px;font-size:13px;position:static;background:none;text-transform:none;letter-spacing:0}
+.mini th{color:var(--muted);font-weight:600}
+.mini td:first-child,.mini th:first-child{text-align:left}
+.mini td,.mini th{text-align:right}
+details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:14px}
 """
 
+JS = r"""
+(function(){
+var D = __DATA__;
+var STORES = D.stores, WEEKS = D.weeks;           // WEEKS: plus récente d'abord
+var BYID = {}; STORES.forEach(function(s){ BYID[s.id] = s; });
+var MAX = 4;                                       // épiceries affichées à la fois (lisibilité sur téléphone)
+var MONTHS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+var KEY = "epicerie.stores";
+var SHAPES = [[0,0],[4,45],[3,-90],[4,0],[3,90],[6,0]]; // cercle, carré, triangle, losange, triangle inversé, hexagone
 
-def fmt_date(iso):
-    y, m, d = iso.split("-")
-    return f"{int(d)} {MONTHS[int(m) - 1]}"
+function $(s){ return document.querySelector(s); }
+function fmtD(iso){ var p = iso.split("-"); return (+p[2]) + " " + MONTHS[+p[1]-1]; }
+function fmtRange(a,b){ var x=a.split("-"), y=b.split("-");
+  return (x[1]===y[1]) ? (+x[2]) + " au " + (+y[2]) + " " + MONTHS[+y[1]-1] : fmtD(a) + " au " + fmtD(b); }
+function money(n){ return n.toFixed(2).replace(".", ","); }
+function norm(s){ return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase(); }
+function slug(s){ return norm(s).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); }
+function keyOf(it){ return it.id || slug(it.p); }
 
+function h(tag, attrs){
+  var e = document.createElement(tag), k, i, kids = Array.prototype.slice.call(arguments, 2);
+  for (k in (attrs||{})){
+    if (k === "class") e.className = attrs[k];
+    else if (k.slice(0,2) === "on") e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (function add(list){ list.forEach(function(c){
+    if (c == null || c === false) return;
+    if (Array.isArray(c)) return add(c);
+    e.append(c.nodeType ? c : document.createTextNode(String(c)));
+  }); })(kids);
+  return e;
+}
+var NS = "http://www.w3.org/2000/svg";
+function s(tag, attrs){
+  var e = document.createElementNS(NS, tag), k;
+  for (k in (attrs||{})) e.setAttribute(k, attrs[k]);
+  for (var i = 2; i < arguments.length; i++) if (arguments[i] != null) e.append(arguments[i].nodeType ? arguments[i] : document.createTextNode(String(arguments[i])));
+  return e;
+}
 
-def fmt_price(offer):
-    if not offer or offer.get("price") is None:
-        return None
-    s = f"{offer['price']:.2f}".replace(".", ",") + " " + offer.get("unit", "$")
-    return s
+/* Marqueur: forme + couleur propres à chaque épicerie (jamais la couleur seule) */
+function shape(store, cx, cy, r){
+  var idx = STORES.indexOf(store), sh = SHAPES[idx % SHAPES.length], fill = "fill:var(--c-" + store.id + ");stroke:var(--bg);stroke-width:2";
+  if (sh[0] === 0) return s("circle", {cx:cx, cy:cy, r:r, style:fill});
+  var pts = [], n = sh[0], rot = sh[1] * Math.PI / 180, rr = sh[0] === 4 && sh[1] === 45 ? r * 1.05 : r * 1.2;
+  for (var i = 0; i < n; i++){ var a = rot + i * 2 * Math.PI / n; pts.push((cx + rr*Math.cos(a)).toFixed(1) + "," + (cy + rr*Math.sin(a)).toFixed(1)); }
+  return s("polygon", {points: pts.join(" "), style: fill});
+}
+function icon(store, size){
+  var r = size / 2 - 1.5;
+  return s("svg", {width:size, height:size, viewBox:"0 0 " + size + " " + size, "aria-hidden":"true", style:"flex:none"}, shape(store, size/2, size/2, r));
+}
 
+/* Prix: on ne compare que des unités compatibles ($/lb et $/kg se convertissent) */
+function kind(o){
+  var u = o.unit || "$";
+  if (u === "$/lb") return {k:"w", v:o.price * 2.20462};
+  if (u === "$/kg") return {k:"w", v:o.price};
+  return {k:u, v:o.price};
+}
+function toUnit(o, unit){
+  var u = o.unit || "$";
+  if (u === unit) return o.price;
+  if (u === "$/lb" && unit === "$/kg") return o.price * 2.20462;
+  if (u === "$/kg" && unit === "$/lb") return o.price / 2.20462;
+  return null;
+}
+function has(o){ return !!o && o.price != null; }
 
-def render_week(week, weeks_index, is_archive):
-    e = html.escape
-    rows, notes, n = [], [], 0
-    cats = []
-    for it in week["items"]:
-        c = it.get("cat", "Autres")
-        if c not in cats:
-            cats.append(c)
-    for c in cats:
-        rows.append(f'<tr class="cat"><td colspan="3">{e(c)}</td></tr>')
-        for it in [x for x in week["items"] if x.get("cat", "Autres") == c]:
-            cells = [f"<td>{e(it['p'])}</td>"]
-            for store in ("maxi", "iga"):
-                offer = it.get(store)
-                price = fmt_price(offer)
-                if price is None:
-                    cells.append('<td class="price none">—</td>')
-                    continue
-                if offer.get("regular") is not None:
-                    price += f" ({offer['regular']:.2f}".replace(".", ",") + " $)"
-                cls = "price best" if offer.get("best") else "price"
-                mark = ""
-                if offer.get("note"):
-                    n += 1
-                    mark = f"<sup> {n}</sup>"
-                    notes.append(f"{n}. {it['p']} ({store.capitalize() if store == 'maxi' else 'IGA'}): {offer['note']}")
-                cells.append(f'<td class="{cls}">{e(price)}{mark}</td>')
-            rows.append("<tr>" + "".join(cells) + "</tr>")
-    notes_html = "".join(f"<p>{e(t)}</p>" for t in notes)
-    prefix = "../" if is_archive else ""
-    weeks_html = "".join(
-        f'<li><a href="{prefix}archive/{w["start"]}.html">Semaine du {fmt_date(w["start"])} au {fmt_date(w["end"])}</a></li>'
-        for w in weeks_index
-    )
-    back = f'<p class="sub"><a href="{prefix}index.html">← Semaine la plus récente</a></p>' if is_archive else ""
-    comment = f'<p class="legend">{e(week.get("comment", ""))}</p>' if week.get("comment") else ""
-    return f"""<!DOCTYPE html>
+function bests(it, ids){
+  var arr = [];
+  if (ids.length < 2) return {};
+  ids.forEach(function(id){ if (has(it[id])) arr.push([id, kind(it[id])]); });
+  if (!arr.length) return {};
+  var k = arr[0][1].k;
+  if (arr.some(function(a){ return a[1].k !== k; })) return {};
+  var min = Math.min.apply(null, arr.map(function(a){ return a[1].v; }));
+  var win = arr.filter(function(a){ return Math.abs(a[1].v - min) < 0.005; });
+  if (arr.length > 1 && win.length > 1) return {};       // égalité: aucun gagnant
+  var r = {}; r[win[0][0]] = true; return r;
+}
+
+/* ---------- état ---------- */
+var sel = loadSel(), q = "", wi = 0, statusTimer;
+function loadSel(){
+  try {
+    var a = JSON.parse(localStorage.getItem(KEY));
+    if (Array.isArray(a)){ var ok = a.filter(function(id){ return BYID[id]; }).slice(0, MAX); if (ok.length) return ok; }
+  } catch (e) {}
+  return ["maxi", "iga"];
+}
+function saveSel(){ try { localStorage.setItem(KEY, JSON.stringify(sel)); } catch (e) {} }
+function say(msg){
+  var el = $("#status"); el.textContent = msg; clearTimeout(statusTimer);
+  if (msg) statusTimer = setTimeout(function(){ el.textContent = ""; }, 4000);
+}
+function cols(){ return STORES.filter(function(st){ return sel.indexOf(st.id) >= 0; }); }
+
+/* index: semaine -> clé de produit -> produit */
+var IDX = {};
+WEEKS.forEach(function(w){ var m = {}; w.items.forEach(function(it){ m[keyOf(it)] = it; }); IDX[w.start] = m; });
+
+function initWeek(){
+  var hsh = location.hash.replace("#", "");
+  for (var i = 0; i < WEEKS.length; i++) if (WEEKS[i].start === hsh) return i;
+  return 0;
+}
+
+/* ---------- en-tête: épiceries + semaine ---------- */
+function renderChips(){
+  var wk = WEEKS[wi], box = $("#chips"); box.textContent = "";
+  var missing = [];
+  STORES.forEach(function(st){
+    var n = wk.items.filter(function(it){ return has(it[st.id]); }).length;
+    var on = sel.indexOf(st.id) >= 0;
+    if (on && !n) missing.push(st.name);
+    box.append(h("button", {type:"button", "class":"chip" + (n ? "" : " empty"), "aria-pressed":String(on),
+      onclick:function(){ toggle(st.id); }},
+      icon(st, 12), st.name, h("span", {"class":"n"}, n ? String(n) : "—")));
+  });
+  $("#nodata").textContent = missing.length ? "Pas encore de données cette semaine pour : " + missing.join(", ") + "." : "";
+}
+function toggle(id){
+  var i = sel.indexOf(id);
+  if (i >= 0){
+    if (sel.length === 1){ say("Garde au moins une épicerie."); return; }
+    sel.splice(i, 1);
+  } else {
+    if (sel.length >= MAX){ say("Maximum " + MAX + " épiceries à la fois pour garder le tableau lisible. Retires-en une d'abord."); return; }
+    sel.push(id);
+  }
+  saveSel(); renderChips(); renderTable();
+}
+function renderWeek(){
+  var wk = WEEKS[wi];
+  $("#wlabel").textContent = "Semaine du " + fmtRange(wk.start, wk.end);
+  $("#older").disabled = wi >= WEEKS.length - 1;
+  $("#newer").disabled = wi <= 0;
+  $("#comment").textContent = wk.comment || "";
+  if (wi === 0) history.replaceState(null, "", location.pathname + location.search);
+  else history.replaceState(null, "", "#" + wk.start);
+}
+function go(d){ wi = Math.min(WEEKS.length - 1, Math.max(0, wi + d)); renderWeek(); renderChips(); renderTable(); }
+
+/* ---------- tableau comparatif ---------- */
+function cell(o, best){
+  var td = h("td", {"class":"pc" + (best ? " best" : "") + (has(o) ? "" : " none")});
+  if (!has(o)){ td.textContent = "—"; td.append(h("span", {"class":"sr"}, "pas de prix")); return td; }
+  td.append(h("span", {"class":"pr"}, money(o.price), o.note ? h("sup", null, "*") : null));
+  if (o.unit && o.unit !== "$") td.append(h("span", {"class":"un"}, o.unit));
+  if (o.regular != null) td.append(h("span", {"class":"rg"}, "rég. " + money(o.regular)));
+  return td;
+}
+function renderTable(){
+  var wk = WEEKS[wi], cs = cols(), nq = norm(q.trim()), box = $("#tableBox"), hidden = 0, shown = 0, groups = [];
+  box.textContent = "";
+  wk.items.forEach(function(it){
+    if (!cs.some(function(c){ return has(it[c.id]); })){ hidden++; return; }
+    if (nq && norm(it.p).indexOf(nq) < 0) return;
+    shown++;
+    var c = it.cat || "Autres", g = groups.filter(function(x){ return x.c === c; })[0];
+    if (!g){ g = {c:c, items:[]}; groups.push(g); }
+    g.items.push(it);
+  });
+  $("#count").textContent = shown + (shown > 1 ? " produits" : " produit") +
+    (hidden && !nq ? " · " + hidden + " sans prix dans tes épiceries" : "");
+  if (!shown){
+    box.append(h("p", {"class":"empty-msg"}, nq ? "Aucun résultat pour « " + q.trim() + " »."
+      : "Aucun prix cette semaine pour tes épiceries. Essaie d'en ajouter une autre."));
+    return;
+  }
+  var w = cs.length <= 2 ? 27 : cs.length === 3 ? 22 : 18;
+  var colgroup = h("colgroup", null, h("col"), cs.map(function(){ return h("col", {style:"width:" + w + "%"}); }));
+  var head = h("tr", null, h("th", null, "Produit"), cs.map(function(c){ return h("th", {"class":"s"}, icon(c, 12), c.name); }));
+  var body = h("tbody");
+  groups.forEach(function(g){
+    body.append(h("tr", {"class":"cat"}, h("td", {colspan:String(cs.length + 1)}, g.c)));
+    g.items.forEach(function(it){
+      var b = bests(it, cs.map(function(c){ return c.id; }));
+      var tr = h("tr", {onclick:function(){ openSheet(it); }},
+        h("td", null, h("button", {type:"button", "class":"prod", "aria-haspopup":"dialog",
+          onclick:function(e){ e.stopPropagation(); openSheet(it); }}, it.p)),
+        cs.map(function(c){ return cell(it[c.id], !!b[c.id]); }));
+      body.append(tr);
+    });
+  });
+  box.append(h("table", null, colgroup, h("thead", null, head), body));
+}
+
+/* ---------- fiche produit + historique ---------- */
+var dlg = $("#sheet"), sheetBody = $("#sheetBody");
+$("#sheetClose").addEventListener("click", function(){ dlg.close(); });
+dlg.addEventListener("click", function(e){ if (e.target === dlg) dlg.close(); });
+dlg.addEventListener("close", function(){ document.documentElement.classList.remove("lock"); });
+
+function history_(it, cs){
+  // semaines chronologiques, tronquées de la première à la dernière semaine avec un prix
+  var k = keyOf(it), chron = WEEKS.slice().reverse(), unit = null;
+  cs.forEach(function(c){ if (!unit && has(it[c.id])) unit = it[c.id].unit || "$"; });
+  var rows = chron.map(function(w){
+    var p = IDX[w.start][k], r = {week:w, offers:{}, vals:{}};
+    cs.forEach(function(c){
+      var o = p && p[c.id];
+      if (has(o)){ r.offers[c.id] = o; var v = toUnit(o, unit); if (v != null) r.vals[c.id] = v; }
+    });
+    return r;
+  });
+  var first = -1, last = -1;
+  rows.forEach(function(r, i){ if (Object.keys(r.vals).length){ if (first < 0) first = i; last = i; } });
+  return {unit:unit, rows: first < 0 ? [] : rows.slice(first, last + 1)};
+}
+function openSheet(it){
+  var cs = cols(), wk = WEEKS[wi], H = history_(it, cs);
+  sheetBody.textContent = "";
+  $("#sheetTitle").textContent = it.p;
+  $("#sheetCat").textContent = it.cat || "";
+
+  sheetBody.append(h("h2", null, "Semaine du " + fmtRange(wk.start, wk.end)));
+  cs.forEach(function(c){
+    var o = it[c.id];
+    sheetBody.append(h("div", {"class":"row"},
+      h("div", {"class":"nm"}, icon(c, 14), h("div", null, c.name, has(o) && o.note ? h("span", {"class":"note"}, o.note) : null)),
+      has(o) ? h("div", {"class":"v"}, money(o.price) + " $", o.unit && o.unit !== "$" ? h("small", null, " " + o.unit.replace("$", "")) : null,
+        o.regular != null ? h("small", null, h("br"), "rég. " + money(o.regular) + " $") : null)
+      : h("div", {"class":"v", style:"font-weight:400;color:var(--muted)"}, "—")));
+  });
+
+  sheetBody.append(h("h2", null, "Historique du prix"));
+  var rows = H.rows, withData = rows.length;
+  if (withData < 2){
+    sheetBody.append(h("p", {"class":"hint"}, "Première semaine enregistrée pour cet aliment : la courbe se dessinera dès la semaine prochaine."));
+  } else {
+    var series = cs.map(function(c){
+      var vals = rows.map(function(r){ return r.vals[c.id] != null ? r.vals[c.id] : null; });
+      return {store:c, vals:vals};
+    }).filter(function(x){ return x.vals.some(function(v){ return v != null; }); });
+    sheetBody.append(h("p", {"class":"hint"}, "Prix en " + (H.unit === "$" ? "$" : H.unit) + ", " + rows.length + " semaines."));
+    sheetBody.append(chart(series, rows, H.unit));
+    sheetBody.append(stats(it, series, H.unit));
+    sheetBody.append(weekTable(rows, series));
+  }
+  document.documentElement.classList.add("lock");
+  dlg.showModal();
+  sheetBody.scrollTop = 0;
+}
+function stats(it, series, unit){
+  var tb = h("tbody");
+  series.forEach(function(sr){
+    var v = sr.vals.filter(function(x){ return x != null; }), cur = toUnit(it[sr.store.id] || {price:null}, unit);
+    if (!has(it[sr.store.id])) cur = null;
+    var min = Math.min.apply(null, v), avg = v.reduce(function(a, b){ return a + b; }, 0) / v.length;
+    var low = cur != null && v.length >= 2 && cur <= min + 0.005;
+    tb.append(h("tr", null,
+      h("td", null, h("span", {"class":"nm", style:"display:inline-flex;align-items:center;gap:6px"}, icon(sr.store, 12), sr.store.name)),
+      h("td", null, cur != null ? money(cur) : "—", low ? h("span", {"class":"badge"}, "au plus bas") : null),
+      h("td", null, money(min)), h("td", null, money(avg)), h("td", null, String(v.length))));
+  });
+  return h("table", {"class":"mini"}, h("thead", null, h("tr", null, h("th", null, "Épicerie"), h("th", null, "Actuel"), h("th", null, "Plus bas"), h("th", null, "Moyenne"), h("th", null, "Sem."))), tb);
+}
+function weekTable(rows, series){
+  var tb = h("tbody");
+  rows.slice().reverse().forEach(function(r){
+    tb.append(h("tr", null, h("td", null, fmtD(r.week.start)),
+      series.map(function(sr){ var v = r.vals[sr.store.id]; return h("td", null, v != null ? money(v) : "—"); })));
+  });
+  return h("details", null, h("summary", null, "Voir les prix semaine par semaine"),
+    h("table", {"class":"mini"}, h("thead", null, h("tr", null, h("th", null, "Semaine du"),
+      series.map(function(sr){ return h("th", null, sr.store.name); }))), tb));
+}
+function chart(series, rows, unit){
+  var W = 320, Hh = 170, L = 42, R = 14, T = 12, B = 26, n = rows.length;
+  var all = [].concat.apply([], series.map(function(x){ return x.vals.filter(function(v){ return v != null; }); }));
+  var lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+  if (hi - lo < 0.01){ lo -= 0.5; hi += 0.5; } else { var pad = (hi - lo) * 0.15; lo = Math.max(0, lo - pad); hi += pad; }
+  function X(j){ return L + j * (W - L - R) / (n - 1); }
+  function Y(v){ return T + (hi - v) / (hi - lo) * (Hh - T - B); }
+  var svg = s("svg", {viewBox:"0 0 " + W + " " + Hh, "class":"chart", role:"img", "aria-label":"Courbe de l'historique des prix"});
+  [lo, (lo + hi) / 2, hi].forEach(function(v){
+    svg.append(s("line", {x1:L, x2:W - R, y1:Y(v), y2:Y(v), stroke:"var(--line)", "stroke-width":"1"}));
+    svg.append(s("text", {x:L - 5, y:Y(v) + 3, "text-anchor":"end"}, money(v)));
+  });
+  rows.forEach(function(r, j){
+    if (n <= 6 || j === 0 || j === n - 1) svg.append(s("text", {x:X(j), y:Hh - 8, "text-anchor":j === 0 ? "start" : j === n - 1 ? "end" : "middle"}, fmtD(r.week.start)));
+  });
+  var xh = s("line", {y1:T, y2:Hh - B, stroke:"var(--muted)", "stroke-width":"1", "stroke-dasharray":"3 3", style:"display:none"});
+  svg.append(xh);
+  series.forEach(function(sr){
+    var d = "", pen = false;
+    sr.vals.forEach(function(v, j){
+      if (v == null){ pen = false; return; }
+      d += (pen ? "L" : "M") + X(j).toFixed(1) + " " + Y(v).toFixed(1) + " "; pen = true;
+    });
+    svg.append(s("path", {d:d, fill:"none", style:"stroke:var(--c-" + sr.store.id + ")", "stroke-width":"2", "stroke-linejoin":"round", "stroke-linecap":"round"}));
+  });
+  series.forEach(function(sr){ sr.vals.forEach(function(v, j){ if (v != null) svg.append(shape(sr.store, X(j), Y(v), 4)); }); });
+
+  var readout = h("div", {"class":"readout", "aria-live":"polite"});
+  function show(j){
+    xh.setAttribute("x1", X(j)); xh.setAttribute("x2", X(j)); xh.style.display = "";
+    readout.textContent = "";
+    readout.append(h("b", null, "Semaine du " + fmtD(rows[j].week.start)));
+    series.forEach(function(sr){
+      var v = sr.vals[j];
+      readout.append(h("span", null, icon(sr.store, 11), sr.store.name + " " + (v != null ? money(v) : "—")));
+    });
+  }
+  var hit = s("rect", {x:L - 10, y:0, width:W - L + 10, height:Hh, fill:"transparent"});
+  function onPoint(e){
+    var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * W;
+    show(Math.max(0, Math.min(n - 1, Math.round((x - L) / ((W - L - R) / (n - 1))))));
+  }
+  hit.addEventListener("pointermove", onPoint); hit.addEventListener("pointerdown", onPoint);
+  svg.append(hit);
+  show(n - 1);
+  var wrap = h("div", null, readout, svg);
+  return wrap;
+}
+
+/* ---------- démarrage ---------- */
+$("#older").addEventListener("click", function(){ go(1); });
+$("#newer").addEventListener("click", function(){ go(-1); });
+$("#q").addEventListener("input", function(e){ q = e.target.value; renderTable(); });
+wi = initWeek();
+renderWeek(); renderChips(); renderTable();
+})();
+"""
+
+PAGE = """<!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rabais d'épicerie – Maxi vs IGA</title><style>{CSS}</style></head>
+<title>Rabais d'épicerie – région de Québec</title><style>__CSS__</style></head>
 <body><main>
-<h1>Rabais d'épicerie – Maxi vs IGA</h1>
-<p class="sub">Circulaires du {fmt_date(week['start'])} au {fmt_date(week['end'])} · région de Québec</p>
-{back}
-<table><thead><tr><th>Produit</th><th>Maxi</th><th>IGA</th></tr></thead><tbody>
-{''.join(rows)}
-</tbody></table>
-<div class="notes">{notes_html}</div>
-<p class="legend">En gras vert: le meilleur prix entre les deux épiceries. Prix tirés des circulaires et des sites des épiceries, à valider en magasin: ils peuvent varier selon la succursale. Projet personnel, non affilié à Maxi ni à IGA.</p>
-{comment}
-<h2>Autres semaines</h2><ul class="weeks">{weeks_html}</ul>
-</main></body></html>
+<h1>Rabais d'épicerie</h1>
+<p class="sub">Circulaires de la semaine · région de Québec</p>
+
+<div class="lbl" id="mystores">Mes épiceries</div>
+<div class="chips" id="chips" role="group" aria-labelledby="mystores"></div>
+<p class="status" id="status" role="status" aria-live="polite"></p>
+<p class="status" id="nodata"></p>
+
+<div class="weeknav">
+  <button type="button" id="older" aria-label="Semaine précédente">‹</button>
+  <div class="wl" id="wlabel"></div>
+  <button type="button" id="newer" aria-label="Semaine suivante">›</button>
+</div>
+
+<input class="search" id="q" type="search" placeholder="Chercher un aliment (ex. poulet)" aria-label="Chercher un aliment" autocomplete="off">
+<div class="count" id="count"></div>
+<div id="tableBox"><noscript><p class="empty-msg">Cette page demande JavaScript pour afficher le tableau.</p></noscript></div>
+
+<div class="legend">
+<p>Touche un produit pour voir le détail et l'historique de son prix. En gras vert: le meilleur prix entre tes épiceries. * = note dans le détail (limite d'achat, prix membre, une seule source…). Prix en dollars; l'unité (/lb, /kg) est sous le prix.</p>
+<p id="comment"></p>
+<p>Prix tirés des circulaires et des sites des épiceries, à valider en magasin: ils peuvent varier selon la succursale. Projet personnel, non affilié à Maxi, IGA, Metro, Provigo, Super C ni Adonis.</p>
+</div>
+</main>
+
+<dialog id="sheet" aria-labelledby="sheetTitle">
+  <div class="sheet-head"><h2><span id="sheetTitle"></span><span class="cat" id="sheetCat"></span></h2><button type="button" class="x" id="sheetClose" aria-label="Fermer">×</button></div>
+  <div class="sheet-body" id="sheetBody"></div>
+</dialog>
+<script>__JS__</script>
+</body></html>
 """
+
+REDIRECT = """<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta http-equiv="refresh" content="0;url=../index.html#{start}">
+<link rel="canonical" href="../index.html#{start}">
+<title>Rabais d'épicerie</title></head>
+<body><p><a href="../index.html#{start}">Voir la semaine du {start}</a></p></body></html>
+"""
+
+
+def store_css():
+    light = "".join(f"--c-{s['id']}:{s['light']};" for s in STORES)
+    dark = "".join(f"--c-{s['id']}:{s['dark']};" for s in STORES)
+    return f":root{{{light}}}@media(prefers-color-scheme:dark){{:root{{{dark}}}}}"
+
+
+def load_weeks():
+    known = {s["id"] for s in STORES}
+    weeks = []
+    for f in sorted(glob.glob(os.path.join(ROOT, "data", "*.json"))):
+        with open(f, encoding="utf-8") as fh:
+            w = json.load(fh)
+        for it in w["items"]:
+            for k in it:
+                if k not in known and k not in META_KEYS:
+                    print(f"Avertissement: clé inconnue '{k}' ({it.get('p')}) dans {os.path.basename(f)}")
+        weeks.append(w)
+    weeks.sort(key=lambda w: w["start"], reverse=True)
+    return weeks
 
 
 def main():
-    files = sorted(glob.glob(os.path.join(ROOT, "data", "*.json")))
-    weeks = []
-    for f in files:
-        with open(f, encoding="utf-8") as fh:
-            weeks.append(json.load(fh))
-    weeks.sort(key=lambda w: w["start"], reverse=True)
+    weeks = load_weeks()
     if not weeks:
         raise SystemExit("Aucune donnée dans data/")
-    os.makedirs(os.path.join(ROOT, "archive"), exist_ok=True)
+    data = {"stores": [{"id": s["id"], "name": s["name"]} for s in STORES], "weeks": weeks}
+    blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    js = JS.replace("__DATA__", blob)
+    css = CSS.replace("__STORECSS__", store_css())
+    page = PAGE.replace("__CSS__", css).replace("__JS__", js)
     with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as fh:
-        fh.write(render_week(weeks[0], weeks, False))
+        fh.write(page)
+    os.makedirs(os.path.join(ROOT, "archive"), exist_ok=True)
     for w in weeks:
         with open(os.path.join(ROOT, "archive", f"{w['start']}.html"), "w", encoding="utf-8") as fh:
-            fh.write(render_week(w, weeks, True))
+            fh.write(REDIRECT.format(start=w["start"]))
     open(os.path.join(ROOT, ".nojekyll"), "w").close()
     print(f"OK: {len(weeks)} semaine(s), plus récente: {weeks[0]['start']}")
 
