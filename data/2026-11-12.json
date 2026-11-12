@@ -1,0 +1,940 @@
+{
+ "start": "2026-11-12",
+ "end": "2026-11-18",
+ "comment": "Sources consultées: circulaires.club (pages magasin Maxi, IGA, Metro, Super C, Provigo; sélections partielles d'aubaines, dates vérifiées 12 au 18 nov. 2026) et circulairecanada.com (pages « semaine prochaine » Maxi, IGA, Metro, Super C, Provigo) pour la corroboration; kimbino.ca seulement pour les dates Maxi. maxi.ca et iga.net répondent 403 et commerce.iga.net est hors du réseau autorisé: pas de prix réguliers officiels; les prix « ensuite/après la limite » et les rabais affichés servent de prix régulier. Prix marqués « une seule source » non corroborés. Provigo: pas de circulaire dans la Capitale-Nationale selon circulaires.club (à valider). Adonis: aucune donnée (circulaires.club vide, circulairecanada 404). Flipp et Reebee non consultés. Historique: 2 semaines seulement.",
+ "items": [
+  {
+   "cat": "Protéines",
+   "p": "Dindon entier",
+   "rec": true,
+   "maxi": {
+    "price": 1.75,
+    "unit": "$/lb",
+    "note": "Flamingo ou Cavalier, limite de 2",
+    "best": true
+   },
+   "metro": {
+    "price": 1.99,
+    "unit": "$/lb",
+    "note": "jeune dindon Flamingo; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Épaule picnic de porc",
+   "rec": true,
+   "superc": {
+    "price": 1.77,
+    "unit": "$/lb",
+    "note": "épaule picnic de porc frais (avec os)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Rôti de longe de porc désossé",
+   "rec": true,
+   "metro": {
+    "price": 2.88,
+    "unit": "$/lb",
+    "note": "rôti de longe de porc frais désossé",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Côtelettes de porc",
+   "rec": true,
+   "provigo": {
+    "price": 3,
+    "unit": "$/lb",
+    "note": "côtelettes de longe de porc",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Filet de porc",
+   "rec": true,
+   "maxi": {
+    "price": 3.99,
+    "unit": "$/lb",
+    "note": "emballage de 2 filets sous vide",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Bœuf haché",
+   "rec": true,
+   "iga": {
+    "price": 10.76,
+    "unit": "$/kg",
+    "regular": 18.98,
+    "note": "mi-maigre, format familial, 4,88 $/lb (rabais de 3,73 $/lb)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Bœuf haché extra-maigre",
+   "superc": {
+    "price": 5.97,
+    "unit": "$/lb",
+    "note": "13,16 $/kg"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Rôti de bas de palette désossé",
+   "maxi": {
+    "price": 6.99,
+    "unit": "$/lb"
+   },
+   "metro": {
+    "price": 6.74,
+    "unit": "$/lb",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Poitrines de poulet désossées",
+   "iga": {
+    "price": 6.49,
+    "unit": "$/lb",
+    "regular": 14.06,
+    "note": "fraîches, Prime"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Cuisses de poulet avec dos",
+   "maxi": {
+    "price": 3,
+    "unit": "$/lb",
+    "note": "une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Ailes de poulet fraîches",
+   "provigo": {
+    "price": 4.99,
+    "unit": "$/lb"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Ailes de poulet 550 g",
+   "iga": {
+    "price": 8.99,
+    "unit": "$",
+    "regular": 16.99,
+    "note": "St-Hubert ou Benny surgelées 550-575 g"
+   },
+   "metro": {
+    "price": 8.99,
+    "unit": "$",
+    "note": "La Cage, ailes ou portions panées surgelées"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Œufs (12)",
+   "rec": true,
+   "superc": {
+    "price": 2.97,
+    "unit": "$",
+    "note": "œufs blancs Selection, gros",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Bacon 375 g",
+   "metro": {
+    "price": 4.99,
+    "unit": "$",
+    "note": "Maple Leaf, prix membre (5,99 $ sinon)"
+   },
+   "provigo": {
+    "price": 5,
+    "unit": "$",
+    "note": "PC, 1 000 points PC Optimum (appli)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Saucisses La Fernandière 900 g",
+   "metro": {
+    "price": 7.99,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Saucisses fumées au poulet 450 g",
+   "superc": {
+    "price": 1.95,
+    "unit": "$",
+    "note": "Selection; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Bologne 100 g",
+   "metro": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "Selection; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Légumineuses 540 ml",
+   "rec": true,
+   "superc": {
+    "price": 1.33,
+    "unit": "$",
+    "note": "Cedar, 3 pour 3,97 $",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Thon 85/170 g",
+   "rec": true,
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "note": "sans nom",
+    "best": true
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Filet de sole",
+   "superc": {
+    "price": 8.77,
+    "unit": "$/lb",
+    "note": "frais"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Filets de poisson blanc 400 g",
+   "provigo": {
+    "price": 7,
+    "unit": "$",
+    "note": "sole, tilapia, pangasius ou goberge Seaquest"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Crevettes 400 g",
+   "provigo": {
+    "price": 8,
+    "unit": "$",
+    "note": "grosses crevettes blanches du Pacifique"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Saumon fumé",
+   "metro": {
+    "price": 4.99,
+    "unit": "$",
+    "note": "Irrésistible 70 g, jeudi à samedi seulement (6,99 $ ensuite)"
+   },
+   "provigo": {
+    "price": 8,
+    "unit": "$",
+    "note": "PC 150 g"
+   }
+  },
+  {
+   "cat": "Protéines",
+   "p": "Coquille aux fruits de mer 275 g",
+   "superc": {
+    "price": 3.97,
+    "unit": "$",
+    "note": "jeudi et vendredi seulement (5,77 $ ensuite)"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Pommes de terre 10 lb",
+   "rec": true,
+   "iga": {
+    "price": 1.92,
+    "unit": "$",
+    "regular": 6.99,
+    "note": "Russet (rabais de 5,07 $)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Carottes 5 lb",
+   "rec": true,
+   "iga": {
+    "price": 1.77,
+    "unit": "$",
+    "regular": 2.99,
+    "note": "carottes ou oignons jaunes 5 lb",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Oignons jaunes 5 lb",
+   "rec": true,
+   "iga": {
+    "price": 1.77,
+    "unit": "$",
+    "regular": 2.99,
+    "note": "carottes ou oignons jaunes 5 lb",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Champignons 227 g",
+   "rec": true,
+   "superc": {
+    "price": 1.47,
+    "unit": "$",
+    "note": "champignons blancs",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Courges",
+   "rec": true,
+   "maxi": {
+    "price": 1,
+    "unit": "$/lb",
+    "note": "buttercup, musquée ou spaghetti du Québec, 2,20 $/kg",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Concombre anglais",
+   "rec": true,
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "note": "du Canada",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Brocoli (couronne)",
+   "metro": {
+    "price": 1.44,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Tomates de serre",
+   "rec": true,
+   "superc": {
+    "price": 1.77,
+    "unit": "$/lb",
+    "note": "Savoura",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Laitue Duo",
+   "superc": {
+    "price": 1.97,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Carottes nantaises 454 g",
+   "superc": {
+    "price": 1.97,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Légumes en conserve 341/398 ml",
+   "rec": true,
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "note": "sans nom",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Mangues",
+   "rec": true,
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "note": "mangue rouge, à l'unité",
+    "best": true
+   },
+   "iga": {
+    "price": 6,
+    "unit": "$",
+    "regular": 12,
+    "note": "sac de 2 kg"
+   },
+   "provigo": {
+    "price": 9.98,
+    "unit": "$",
+    "note": "caisse (environ 9 lb)"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Avocats",
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "note": "à l'unité"
+   },
+   "iga": {
+    "price": 6,
+    "unit": "$",
+    "regular": 12,
+    "note": "Hass, sac de 2 kg"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Kiwis",
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "note": "à l'unité"
+   },
+   "metro": {
+    "price": 3.99,
+    "unit": "$",
+    "note": "sac de 2 lb"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Kiwis jaunes 454 g",
+   "superc": {
+    "price": 3.97,
+    "unit": "$",
+    "note": "Sungold"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Framboises 170 g",
+   "rec": true,
+   "superc": {
+    "price": 1.97,
+    "unit": "$",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Bleuets 170 g",
+   "metro": {
+    "price": 2.44,
+    "unit": "$",
+    "note": "170 g ou jumbo 113 g"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Bleuets 340 g",
+   "provigo": {
+    "price": 4,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Clémentines 5 lb",
+   "rec": true,
+   "provigo": {
+    "price": 5.88,
+    "unit": "$",
+    "best": true
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Raisins rouges",
+   "maxi": {
+    "price": 1.67,
+    "unit": "$/lb",
+    "note": "sans pépins; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Ananas",
+   "superc": {
+    "price": 2.97,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Légumes surgelés 750 g",
+   "provigo": {
+    "price": 3,
+    "unit": "$",
+    "note": "PC 350-750 g; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Légumes surgelés 500 g",
+   "superc": {
+    "price": 2.77,
+    "unit": "$",
+    "note": "Selection; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Légumes et fruits",
+   "p": "Pommes de terre surgelées",
+   "superc": {
+    "price": 2.77,
+    "unit": "$",
+    "note": "McCain 550-800 g"
+   },
+   "provigo": {
+    "price": 3,
+    "unit": "$",
+    "note": "frites ou accompagnements Cavendish 400-750 g"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Beurre 454 g",
+   "rec": true,
+   "maxi": {
+    "price": 4.97,
+    "unit": "$",
+    "regular": 7,
+    "note": "Lactantia, limite de 8 (7 $ ensuite)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Fromage P'tit Québec 400 g",
+   "rec": true,
+   "maxi": {
+    "price": 5.47,
+    "unit": "$",
+    "note": "barre 400 g ou râpé 300/320 g, limite de 6",
+    "best": true
+   },
+   "superc": {
+    "price": 5.47,
+    "unit": "$",
+    "note": "400 g ou râpé 300-320 g"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Fromage râpé sans nom",
+   "provigo": {
+    "price": 4.98,
+    "unit": "$",
+    "note": "une seule source (circulairecanada.com)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Crème 35 % 473 ml",
+   "rec": true,
+   "maxi": {
+    "price": 3,
+    "unit": "$",
+    "note": "Sealtest ou Québon; aussi crème à café 10 % 1 L",
+    "best": true
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Kraft Singles 410 g",
+   "maxi": {
+    "price": 4,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)"
+   },
+   "metro": {
+    "price": 3.97,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Fromage à la crème Philadelphia 227-250 g",
+   "iga": {
+    "price": 3.97,
+    "unit": "$",
+    "regular": 5.39
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Boursin 150/200 g",
+   "provigo": {
+    "price": 5,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Yogourt grec Liberté 650-750 g",
+   "metro": {
+    "price": 6.97,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Yogourt Iögo 16 × 100 g",
+   "provigo": {
+    "price": 6.5,
+    "unit": "$",
+    "note": "Iögo ou Siggi's"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Lait évaporé Carnation 354 ml",
+   "superc": {
+    "price": 1.47,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Boisson Silk 1,75/1,89 L",
+   "provigo": {
+    "price": 3.25,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Sirop d'érable 540 ml",
+   "rec": true,
+   "maxi": {
+    "price": 5.97,
+    "unit": "$",
+    "regular": 9,
+    "note": "Émilie, limite de 4 (9 $ ensuite)",
+    "best": true
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Huile d'olive 750 ml-1 L",
+   "rec": true,
+   "maxi": {
+    "price": 7.77,
+    "unit": "$",
+    "regular": 10,
+    "note": "Galloo, limite de 4 (10 $ ensuite)",
+    "best": true
+   },
+   "provigo": {
+    "price": 10.98,
+    "unit": "$",
+    "note": "Bertolli ou Filippo Berio; une seule source (circulairecanada.com)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Gruau instantané Quaker",
+   "superc": {
+    "price": 2.77,
+    "unit": "$",
+    "note": "232-344 g; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Céréales General Mills",
+   "metro": {
+    "price": 2.87,
+    "unit": "$"
+   },
+   "superc": {
+    "price": 2.87,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Nutella 725 g",
+   "metro": {
+    "price": 4.99,
+    "unit": "$",
+    "note": "prix membre (6,99 $ sinon)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Bouillon Campbell's 900 ml",
+   "iga": {
+    "price": 1.99,
+    "unit": "$",
+    "note": "ou concentré 250 ml, prix membre Scène+; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Soupe Campbell's 284 ml",
+   "iga": {
+    "price": 0.79,
+    "unit": "$",
+    "regular": 0.99,
+    "note": "prix membre Scène+ (0,99 $ sinon)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Soupe Aylmer 284 ml",
+   "metro": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Sauce Cordon Bleu ou Esta",
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "regular": 2,
+    "note": "284/398 ml, limite de 8 (2 $ ensuite)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Mélanges à sauce",
+   "metro": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "sélection; une seule source (circulaires.club)"
+   },
+   "iga": {
+    "price": 1.25,
+    "unit": "$",
+    "note": "St-Hubert, Fine cuisine ou The Keg; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Épicerie sèche",
+   "p": "Ketchup ou mayonnaise",
+   "provigo": {
+    "price": 5,
+    "unit": "$",
+    "note": "une seule source (circulairecanada.com)"
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Biscuits Leclerc 200-350 g",
+   "rec": true,
+   "maxi": {
+    "price": 2.5,
+    "unit": "$",
+    "best": true
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Mini biscuits Christie",
+   "maxi": {
+    "price": 1.88,
+    "unit": "$",
+    "note": "144-200 g; une seule source (circulaires.club)"
+   },
+   "provigo": {
+    "price": 1.88,
+    "unit": "$",
+    "note": "144-200 g; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Crème glacée Breyers 1,4 L",
+   "rec": true,
+   "maxi": {
+    "price": 2.5,
+    "unit": "$",
+    "note": "dessert glacé classique 1,41 L",
+    "best": true
+   },
+   "provigo": {
+    "price": 4,
+    "unit": "$",
+    "note": "une seule source (circulairecanada.com)"
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Craquelins de riz 100 g",
+   "metro": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "Mieux-être; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Croustilles Lay's",
+   "provigo": {
+    "price": 3,
+    "unit": "$",
+    "note": "une seule source (circulairecanada.com)"
+   }
+  },
+  {
+   "cat": "Collations et desserts",
+   "p": "Pistaches Wonderful",
+   "provigo": {
+    "price": 5,
+    "unit": "$",
+    "note": "une seule source (circulairecanada.com)"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Plats Michelina's",
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "regular": 2,
+    "note": "128-284 g, limite de 8 (2 $ ensuite)"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Pâtés et tourtières prêts-à-cuire",
+   "iga": {
+    "price": 5.99,
+    "unit": "$",
+    "regular": 6.99,
+    "note": "540-585 g, prix membre Scène+ (6,99 $ sinon)"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Tourtière Michel Barrette 2,5 kg",
+   "superc": {
+    "price": 19.99,
+    "unit": "$",
+    "note": "surgelée"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Pizza",
+   "superc": {
+    "price": 2.97,
+    "unit": "$",
+    "note": "Gusto Italiano Irrésistible croûte mince, prix membre (3,47 $ sinon)"
+   },
+   "iga": {
+    "price": 13.99,
+    "unit": "$",
+    "note": "pizza pochettes McCain 1,2 kg; une seule source (circulaires.club)"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Bol poké",
+   "iga": {
+    "price": 11.99,
+    "unit": "$",
+    "note": "300-420 g"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Dîner surgelé Selection 215 g",
+   "metro": {
+    "price": 0.99,
+    "unit": "$"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Jus Simply 1,36-1,54 L",
+   "iga": {
+    "price": 3.44,
+    "unit": "$",
+    "regular": 4.77,
+    "note": "appli, 12 au 14 nov., limite 4 (4,77 $ sinon)"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Jus Allen's 1 L",
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "regular": 1.69,
+    "note": "limite de 8 (1,69 $ ensuite)"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Lait aromatisé 473 ml",
+   "metro": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "Québon ou Sealtest"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Boissons gazeuses",
+   "metro": {
+    "price": 0.99,
+    "unit": "$",
+    "note": "Selection 2 L"
+   },
+   "superc": {
+    "price": 3.33,
+    "unit": "$",
+    "note": "Pepsi ou Coke 6 × 710 ml, prix membre"
+   }
+  },
+  {
+   "cat": "Autres",
+   "p": "Powerade 710 ml",
+   "maxi": {
+    "price": 1,
+    "unit": "$",
+    "regular": 1.69,
+    "note": "limite de 8 (1,69 $ ensuite)"
+   }
+  }
+ ]
+}
